@@ -1,7 +1,7 @@
 use std::{
     env,
     net::SocketAddr,
-    sync::{Arc, Mutex},
+    sync::{Arc, Mutex, OnceLock},
 };
 
 use axum::{
@@ -11,6 +11,7 @@ use axum::{
     response::{IntoResponse, Response},
     routing::{get, post},
 };
+use regex::Regex;
 use rusqlite::{Connection, OptionalExtension, params};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -100,6 +101,22 @@ fn valid_text(value: &str) -> bool {
     !value.trim().is_empty() && value.chars().count() <= MAX_FIELD_CHARS
 }
 
+fn redact(value: &str) -> String {
+    static PATTERNS: OnceLock<[Regex; 3]> = OnceLock::new();
+    let patterns = PATTERNS.get_or_init(|| {
+        [
+            Regex::new(r"(?i)(bearer\s+)[A-Za-z0-9._~+/-]+=*").unwrap(),
+            Regex::new(r#"(?i)(api[_-]?key|access[_-]?token|secret|password)\s*[:=]\s*[\"']?[^,\s\"';&]+\"?"#).unwrap(),
+            Regex::new(r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16})\b").unwrap(),
+        ]
+    });
+    let redacted = patterns[0].replace_all(value, "$1[REDACTED]");
+    let redacted = patterns[1].replace_all(&redacted, "$1=[REDACTED]");
+    patterns[2]
+        .replace_all(&redacted, "[REDACTED]")
+        .into_owned()
+}
+
 fn read_finding(row: &rusqlite::Row<'_>) -> rusqlite::Result<Finding> {
     Ok(Finding {
         id: row.get(0)?,
@@ -148,11 +165,11 @@ async fn create_finding(
 
     let finding = Finding {
         id: Uuid::new_v4().to_string(),
-        title: input.title,
-        target: input.target,
-        scanner: input.scanner,
-        component: input.component,
-        severity: input.severity,
+        title: redact(&input.title),
+        target: redact(&input.target),
+        scanner: redact(&input.scanner),
+        component: input.component.as_deref().map(redact),
+        severity: input.severity.as_deref().map(redact),
         status: "needs-review".to_owned(),
         created_at: now_unix(),
     };

@@ -13,7 +13,7 @@ All routes are under `/api/v1`:
 | `POST` | `/findings` | Store a finding in `needs-review` |
 | `POST` | `/findings/{id}/decision` | Review once: `approved`, `rejected`, `duplicate`, or `false-positive` |
 
-Create a finding with JSON fields `title`, `target`, `scanner`, and optional `component` and `severity`. Request bodies are limited to 64 KiB and each text field to 2,000 characters. Review decisions are recorded with the creation event in the local SQLite audit log. Approval only changes the finding status; no report is sent.
+Create a finding with JSON fields `title`, `target`, `scanner`, and optional `component` and `severity`. Request bodies are limited to 64 KiB and each text field to 2,000 characters. Common bearer tokens, cloud access keys, GitHub tokens, and values assigned to fields named `api_key`, `access_token`, `secret`, or `password` are redacted before storage. Review decisions are recorded with the creation event in the local SQLite audit log. Approval only changes the finding status; no report is sent.
 
 Example:
 
