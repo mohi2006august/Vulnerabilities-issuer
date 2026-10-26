@@ -1,0 +1,13 @@
+# Safety-critical paths require review from safety owners (see GOVERNANCE.md).
+# Replace @<handle> with the real GitHub handle or a team, e.g. @<org>/safety-owners.
+
+/crates/bugraiser-core/src/safety/   @<handle>
+/crates/bugraiser-core/src/redact/   @<handle>
+/crates/bugraiser-routers/           @<handle>
+/crates/bugraiser-adapters/          @<handle>
+/crates/bugraiser-sdk/               @<handle>
+/docs/RESPONSIBLE_USE.md             @<handle>
+/docs/DISCLOSURE_POLICY.md           @<handle>
+/docs/THREAT_MODEL.md                @<handle>
+/SECURITY.md                         @<handle>
+/deny.toml                           @<handle>

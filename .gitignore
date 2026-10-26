@@ -1,0 +1,4 @@
+/target/
+/bugraiser.db
+/bugraiser.db-shm
+/bugraiser.db-wal
