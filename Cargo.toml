@@ -2,7 +2,7 @@
 name = "bugraiser-server"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.89"
 description = "Local API and SQLite store for BugRaiser findings"
 license = "MIT OR Apache-2.0"
 
