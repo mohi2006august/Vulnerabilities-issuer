@@ -14,6 +14,7 @@ use axum::{
 use rusqlite::{Connection, OptionalExtension, params};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use uuid::Uuid;
 
 const MAX_BODY_BYTES: usize = 64 * 1024;
 const MAX_FIELD_CHARS: usize = 2_000;
