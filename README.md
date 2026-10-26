@@ -26,17 +26,17 @@ Finding a bug is easy. Reporting it well is hard: you need to check for duplicat
 | Human review gate | Nothing is submitted without explicit approval |
 | Audit log | Records what was scanned, when, and under which authorization |
 
-## Quick start (target UX)
+## Terminal quick start
 
 ```bash
-cargo install bugraiser --locked   # or download a prebuilt binary from Releases
-
-bugraiser init                   # creates config + consent file
-bugraiser scan repo https://github.com/org/project
-bugraiser scan site https://example.com --authorized-by ./authorization.toml
-bugraiser review                 # interactive triage of findings
-bugraiser raise --finding F-001  # drafts and, after approval, submits
+cargo run -- --help
+cargo run -- findings add --title "Example issue" --target ./project --scanner manual --severity high
+cargo run -- findings list
+cargo run -- findings review <finding-id> approved
+cargo run -- serve
 ```
+
+The CLI and local API share `bugraiser.db` by default. Set `BUGRAISER_DATABASE` to use another SQLite file. Scanning and report submission are not implemented yet.
 
 ## Documentation
 
@@ -62,7 +62,7 @@ bugraiser raise --finding F-001  # drafts and, after approval, submits
 
 ## Backend API (early development)
 
-The initial Rust backend provides a loopback-only API and SQLite store for findings. Start it with `cargo run`; see [docs/API.md](docs/API.md) for routes and configuration. Findings require an explicit review decision, and the API does not submit reports.
+The initial Rust backend provides a loopback-only API and SQLite store for findings. Start it with `cargo run -- serve`; see [docs/API.md](docs/API.md) for routes and configuration. Findings require an explicit review decision, and the API does not submit reports.
 
 ## Ground rules (summary)
 
@@ -82,4 +82,4 @@ at your option. Unless you state otherwise, contributions you submit are dual-li
 
 ## Status
 
-Pre-alpha, written in Rust. The local findings API is an early backend slice; scanners, authentication, and report submission are not implemented. See [ROADMAP.md](ROADMAP.md).
+Pre-alpha, written in Rust. The terminal findings commands and local API are early backend slices; scanners, authentication, and report submission are not implemented. See [ROADMAP.md](ROADMAP.md).

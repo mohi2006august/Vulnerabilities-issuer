@@ -2,7 +2,7 @@
 
 The first backend slice stores findings in SQLite and exposes a loopback-only HTTP API. It does not scan targets or submit reports.
 
-Run it with `cargo run`. It listens on `127.0.0.1:3000` by default. Set `BUGRAISER_PORT` to change the port and `BUGRAISER_DATABASE` to choose the SQLite file path.
+Run it with `cargo run -- serve`. It listens on `127.0.0.1:3000` by default. Set `BUGRAISER_PORT` to change the port and `BUGRAISER_DATABASE` to choose the SQLite file path. The terminal commands use the same database.
 
 All routes are under `/api/v1`:
 

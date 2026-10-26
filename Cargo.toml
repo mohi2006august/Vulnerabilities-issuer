@@ -1,5 +1,5 @@
 [package]
-name = "bugraiser-server"
+name = "bugraiser"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.89"
@@ -8,6 +8,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 axum = "0.8.9"
+clap = { version = "4.5", features = ["derive"] }
 rusqlite = { version = "0.41.0", features = ["bundled"] }
 regex = "1.12"
 serde = { version = "1", features = ["derive"] }
